@@ -30,7 +30,7 @@ class User extends Authenticatable
     {
         $this->belongsToMany(
             Task::class,
-            'users_tasks',
+            'tasks_users',
             'user_id',
             'task_id',
             'id'
