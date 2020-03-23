@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -26,14 +27,19 @@ class User extends Authenticatable
         $this->hasMany(Task::class, 'user_id', 'id');
     }
 
-    public function assignedTasks()
+    public function assignedTasks(): BelongsToMany
     {
-        $this->belongsToMany(
+        return $this->belongsToMany(
             Task::class,
             'tasks_users',
             'user_id',
             'task_id',
             'id'
         )->withTimestamps();
+    }
+
+    public function assignToTask(Task $task)
+    {
+        $this->assignedTasks()->attach($task);
     }
 }
